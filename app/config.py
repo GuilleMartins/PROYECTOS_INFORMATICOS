@@ -8,7 +8,7 @@ load_dotenv(base_dir / '.env')
 
 class Config:
     # Seguridad
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'clave-dev-uninorte-segura-2026')
+    SECRET_KEY = os.environ['SECRET_KEY']
     
     # Parámetros de conexión a Base de Datos
     DB_USER = os.environ.get('DB_USER', 'postgres')
