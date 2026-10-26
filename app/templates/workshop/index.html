@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Taller e Inventario{% endblock %}
+{% block page_title %}Taller Técnico y Repuestos{% endblock %}
+
+{% block content %}
+<div class="card-stat">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h5 class="fw-bold mb-0">Catálogo de Repuestos e Insumos</h5>
+        <span class="badge bg-primary">{{ parts|length }} artículos</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>Categoría</th>
+                    <th>Precio Venta</th>
+                    <th>Stock Actual</th>
+                    <th>Estado Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for part in parts %}
+                <tr>
+                    <td class="fw-bold">{{ part.code }}</td>
+                    <td>{{ part.name }}</td>
+                    <td><span class="badge bg-light text-dark border">{{ part.category }}</span></td>
+                    <td class="fw-semibold">₲ {{ "{:,.0f}".format(part.selling_price).replace(',', '.') }}</td>
+                    <td class="fw-bold">{{ part.stock_quantity }} unid.</td>
+                    <td>
+                        {% if part.is_low_stock %}
+                        <span class="badge bg-danger">Stock Bajo (mín: {{ part.min_stock_alert }})</span>
+                        {% else %}
+                        <span class="badge bg-success">Disponible</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">No hay repuestos cargados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

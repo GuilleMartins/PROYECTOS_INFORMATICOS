@@ -1,0 +1,25 @@
+# Entorno virtual
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Variables de entorno secretas
+.env
+
+# Base de datos local de respaldo/pruebas
+*.sqlite3
+*.db
+
+# Archivos de VS Code
+.vscode/*
+!.vscode/settings.json
+
+# Códigos QR generados dinámicamente
+app/static/qr_codes/*
+!app/static/qr_codes/.gitkeep

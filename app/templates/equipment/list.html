@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Equipos{% endblock %}
+{% block page_title %}Registro de Equipos{% endblock %}
+
+{% block content %}
+<div class="card-stat">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h5 class="fw-bold mb-0">Equipos Registrados</h5>
+        <span class="badge bg-primary">{{ equipments|length }} equipos</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Cliente</th>
+                    <th>Tipo</th>
+                    <th>Marca y Modelo</th>
+                    <th>Nº de Serie</th>
+                    <th>Estado Físico</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for eq in equipments %}
+                <tr>
+                    <td class="fw-bold">{{ eq.client.full_name }}</td>
+                    <td>{{ eq.equipment_type }}</td>
+                    <td>{{ eq.brand }} {{ eq.model }}</td>
+                    <td>{{ eq.serial_number or '-' }}</td>
+                    <td>{{ eq.physical_condition or '-' }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">No hay equipos registrados aún.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

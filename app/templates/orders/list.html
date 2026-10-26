@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Órdenes de Trabajo{% endblock %}
+{% block page_title %}Gestión de Órdenes de Trabajo{% endblock %}
+
+{% block content %}
+<div class="card-stat">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h5 class="fw-bold mb-0">Órdenes de Trabajo</h5>
+        <span class="badge bg-primary">{{ orders|length }} órdenes</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Nº Orden</th>
+                    <th>Fecha Ingreso</th>
+                    <th>Cliente</th>
+                    <th>Equipo</th>
+                    <th>Estado</th>
+                    <th>Falla Reportada</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ord in orders %}
+                <tr>
+                    <td class="fw-bold text-primary">{{ ord.order_number }}</td>
+                    <td>{{ ord.entry_date.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td>{{ ord.client.full_name }}</td>
+                    <td>{{ ord.equipment.brand }} {{ ord.equipment.model }}</td>
+                    <td><span class="badge bg-{{ ord.status_badge_class }}">{{ ord.status_label }}</span></td>
+                    <td class="text-truncate" style="max-width: 250px;">{{ ord.reported_failure }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">No hay órdenes registradas.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
