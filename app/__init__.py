@@ -1,7 +1,8 @@
 import os
 from flask import Flask
 from app.config import Config
-from app.extensions import db, login_manager
+from app.extensions import db, login_manager, csrf
+
 
 def create_app(config_class=Config):
     flask_app = Flask(__name__)
@@ -14,6 +15,7 @@ def create_app(config_class=Config):
     # Inicializar extensiones
     db.init_app(flask_app)
     login_manager.init_app(flask_app)
+    csrf.init_app(flask_app)
 
     # Importar y registrar modelos para SQLAlchemy
     from app import models  # noqa: F401
