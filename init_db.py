@@ -3,6 +3,7 @@ Script de Inicialización de Base de Datos
 Crea las tablas en PostgreSQL / SQLite y carga los datos semilla (Roles, Usuarios, Repuestos, Clientes).
 """
 import sys
+import getpass
 from app import create_app
 from app.extensions import db
 from app.models.user import Role, User
@@ -36,35 +37,62 @@ def initialize_database():
                 db.session.commit()
                 print("[OK] Roles iniciales registrados (ADMIN, TECNICO).")
 
+
             # 2. Usuarios
-            admin_user = User.query.filter_by(username='admin').first()
+            admin_user = User.query.filter_by(
+                username='admin'
+            ).first()
+
+            tech_user = User.query.filter_by(
+                username='tecnico'
+            ).first()
+
             if not admin_user:
+                password = getpass.getpass(
+                    "Nueva contraseña del administrador: "
+                )
+
+                if len(password) < 12:
+                    raise ValueError(
+                        "La contraseña debe tener al menos 12 caracteres."
+                    )
+
                 admin_user = User(
                     role_id=1,
                     username='admin',
                     email='admin@uninorte.edu.py',
                     first_name='Carlos',
-                    last_name='Administrador',
-                    phone='0981111222'
+                    last_name='Administrador'
                 )
-                admin_user.set_password('admin123')
+
+                admin_user.set_password(password)
                 db.session.add(admin_user)
+                print("[OK] Administrador creado.")
+
+            if not tech_user:
+                password = getpass.getpass(
+                    "Nueva contraseña del técnico: "
+                )
+
+                if len(password) < 12:
+                    raise ValueError(
+                        "La contraseña debe tener al menos 12 caracteres."
+                    )
 
                 tech_user = User(
                     role_id=2,
                     username='tecnico',
                     email='tecnico@uninorte.edu.py',
                     first_name='Lucas',
-                    last_name='Técnico Especialista',
-                    phone='0971333444'
+                    last_name='Técnico Especialista'
                 )
-                tech_user.set_password('tecnico123')
-                db.session.add(tech_user)
 
-                db.session.commit()
-                print("[OK] Usuarios iniciales creados:")
-                print("    - Admin:   usuario 'admin'   / contraseña 'admin123'")
-                print("    - Técnico: usuario 'tecnico' / contraseña 'tecnico123'")
+                tech_user.set_password(password)
+                db.session.add(tech_user)
+                print("[OK] Técnico creado.")
+
+            db.session.commit()
+
 
             # 3. Repuestos iniciales
             if Part.query.count() == 0:
